@@ -62,7 +62,7 @@ Projeto de Machine Learning aplicado ao mercado imobiliário de São Paulo, util
 
 ```mermaid
 flowchart TD
-    A([Dataset\n~13.000 anúncios SP\Abril 2019]) --> B[EDA\Distribuições · Correlações]
+    A([Dataset\anúncios SP\Abril 2019]) --> B[EDA\Distribuições · Correlações]
     B --> C[Limpeza\nRemoção de colunas · Filtro aluguel]
     C --> D[Feature Engineering\OneHotEncoder · 94 bairros]
     D --> E[Modelagem\3 algoritmos comparados]
