@@ -94,7 +94,7 @@ flowchart TD
 
 ## Dataset
 
-**Fonte:** [Imóveis em São Paulo – Venda / Aluguel – Abril 2019](https://www.kaggle.com/datasets/argonalyst/sao-paulo-real-estate-sale-rent-april-2019) — Kaggle  
+**Fonte:** [Imóveis em São Paulo Venda / Aluguel Abril 2019](https://www.kaggle.com/datasets/argonalyst/sao-paulo-real-estate-sale-rent-april-2019) Kaggle  
 **Uso:** Exclusivamente educacional
 
 | Característica | Detalhe |
@@ -105,7 +105,7 @@ flowchart TD
 | Outliers removidos | 583 registros (coordenadas inválidas e preços extremos) |
 | Período | Abril de 2019 |
 
-**Estatísticas descritivas — Preço de Aluguel (após limpeza):**
+**Estatísticas descritivas Preço de Aluguel (após limpeza):**
 
 | Métrica | Valor |
 |---|---|
@@ -137,7 +137,7 @@ flowchart TD
 
 **Preparação dos Dados**
 - Remoção de imóveis com coordenadas geográficas inválidas
-- Remoção de outliers de preço (acima de R$ 15.000 — 1,4% do dataset)
+- Remoção de outliers de preço (acima de R$ 15.000 1,4% do dataset)
 - Remoção de colunas irrelevantes: `New`, `Property Type`, `Negotiation Type`
 - Encoding de `District` via `get_dummies`
 - Split treino/teste: **80% / 20%** com `random_state=42`
@@ -146,7 +146,7 @@ flowchart TD
 
 ## Modelos Avaliados
 
-### Comparação de RMSE — Cross Validation (10 folds)
+### Comparação de RMSE Cross Validation (10 folds)
 
 ![Comparação dos Modelos](assets/comparacao_modelos.png)
 
