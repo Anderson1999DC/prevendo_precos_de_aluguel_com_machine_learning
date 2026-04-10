@@ -225,14 +225,22 @@ prevendo_precos_de_aluguel_com_machine_learning/
 └──  README.md                                # Documentação do projeto
 ```
 
----
-
 ## Autor
 
-[![](https://github.com/Anderson1999DC.png width="80")](https://github.com/Anderson1999DC)
+<div align="center">
 
-**Anderson Coelho**  
+<img src="https://github.com/Anderson1999DC.png" width="100px" style="border-radius:50%"/>
+
+**Anderson Coelho**
 *Cientista de Dados*
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/anderson-coelho-42671634a/)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Anderson1999DC)
+
+</div>
+
+---
+
+<div align="center">
+
+</div>
