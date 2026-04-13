@@ -16,7 +16,7 @@
 
 &nbsp;
 
-🔗 **[Acessar interface interativa](https://api-aluguel-sp.onrender.com/app)** &nbsp;|&nbsp; 📄 **[Documentação da API](https://api-aluguel-sp.onrender.com/docs)**
+**[Acessar interface interativa](https://api-aluguel-sp.onrender.com/app)** &nbsp;|&nbsp; **[Documentação da API](https://api-aluguel-sp.onrender.com/docs)**
 
 ---
 
