@@ -8,6 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY modelo_aluguel_sp.pkl .
 COPY colunas_modelo.pkl .
 COPY main.py .
+COPY index.html .
 
 EXPOSE 8000
 
