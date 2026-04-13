@@ -15,7 +15,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Estrutura dos dados de entrada
 class Imovel(BaseModel):
     Condo: float
     Size: float
@@ -34,9 +33,13 @@ class Imovel(BaseModel):
 def root():
     return {"status": "online", "modelo": "Random Forest", "versao": "1.0.0"}
 
+@app.get("/app", response_class=HTMLResponse)
+def interface():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
+
 @app.post("/predict")
 def predict(imovel: Imovel):
-    # Montando dicionário com os dados recebidos
     dados = {
         "Condo": imovel.Condo,
         "Size": imovel.Size,
@@ -52,14 +55,9 @@ def predict(imovel: Imovel):
         "District": imovel.District
     }
 
-    # Criando DataFrame e aplicando get_dummies igual ao treino
     df = pd.DataFrame([dados])
     df_encoded = pd.get_dummies(df, columns=["District"], dtype=int)
-
-    # Alinhando colunas com o modelo treinado
     df_final = df_encoded.reindex(columns=colunas, fill_value=0)
-
-    # Fazendo a previsão
     preco = modelo.predict(df_final)[0]
 
     return {
@@ -67,10 +65,3 @@ def predict(imovel: Imovel):
         "unidade": "BRL",
         "modelo": "RandomForestRegressor"
     }
-
-from fastapi.responses import HTMLResponse
-
-@app.get("/app", response_class=HTMLResponse)
-def interface():
-    with open("index.html", "r", encoding="utf-8") as f:
-        return f.read()
