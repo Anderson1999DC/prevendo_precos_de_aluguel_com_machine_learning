@@ -66,3 +66,10 @@ def predict(imovel: Imovel):
         "unidade": "BRL",
         "modelo": "RandomForestRegressor"
     }
+
+from fastapi.responses import HTMLResponse
+
+@app.get("/app", response_class=HTMLResponse)
+def interface():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
