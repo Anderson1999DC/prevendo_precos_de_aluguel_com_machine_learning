@@ -1,1 +1,535 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Previsão de Aluguel — São Paulo</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #191919;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --accent: #c8a96e;
+    --accent2: #e8c98e;
+    --text: #f0ede8;
+    --muted: #888;
+    --green: #4caf7d;
+    --red: #e05c5c;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  /* BG texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(200,169,110,0.06) 0%, transparent 60%),
+                      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(200,169,110,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 1;
+    padding: 2rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .status-dot {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    width: 100%;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 440px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .card-header span {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .card-header .tag {
+    background: rgba(200,169,110,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(200,169,110,0.2);
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .form-grid {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  input, select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    padding: 10px 14px;
+    width: 100%;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  select option { background: #1e1e1e; }
+
+  .toggles {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .toggle-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    padding: 8px 14px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .toggle-btn.active {
+    background: rgba(200,169,110,0.12);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .card-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .btn-predict {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    color: #0f0f0f;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 12px 28px;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .btn-predict:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn-predict:active { transform: translateY(0); }
+  .btn-predict:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .hint {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Result */
+  .result {
+    margin-top: 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    display: none;
+    animation: fadeUp 0.3s ease;
+  }
+
+  .result.visible { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .result-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-price {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-sub {
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  .result-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .result-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+  .meta-value { font-size: 0.9rem; color: var(--text); }
+
+  .error-msg {
+    background: rgba(224,92,92,0.08);
+    border: 1px solid rgba(224,92,92,0.2);
+    border-radius: 8px;
+    color: var(--red);
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    padding: 12px 16px;
+    display: none;
+  }
+
+  .error-msg.visible { display: block; }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem 2.5rem;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  footer span { font-size: 0.75rem; color: var(--muted); }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: opacity 0.2s;
+  }
+
+  footer a:hover { opacity: 0.7; }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .field.full { grid-column: 1; }
+    .result-price { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Aluguel SP · ML</div>
+  <div class="status-dot">
+    <div class="dot"></div>
+    <span>API Online</span>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Previsão de <em>aluguel</em><br>em São Paulo</h1>
+    <p>Modelo Random Forest treinado com 6.645 apartamentos reais. Preencha as características do imóvel e receba uma estimativa de preço.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <span>Características do imóvel</span>
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label>Área (m²)</label>
+        <input type="number" id="size" value="65" min="20" max="500">
+      </div>
+      <div class="field">
+        <label>Condomínio (R$)</label>
+        <input type="number" id="condo" value="500" min="0">
+      </div>
+      <div class="field">
+        <label>Quartos</label>
+        <input type="number" id="rooms" value="2" min="1" max="10">
+      </div>
+      <div class="field">
+        <label>Banheiros</label>
+        <input type="number" id="toilets" value="2" min="1" max="8">
+      </div>
+      <div class="field">
+        <label>Suítes</label>
+        <input type="number" id="suites" value="1" min="0" max="5">
+      </div>
+      <div class="field">
+        <label>Vagas de garagem</label>
+        <input type="number" id="parking" value="1" min="0" max="9">
+      </div>
+      <div class="field full">
+        <label>Distrito</label>
+        <select id="district">
+          <option>Moema/São Paulo</option>
+          <option>Pinheiros/São Paulo</option>
+          <option>Vila Madalena/São Paulo</option>
+          <option>Jardins/São Paulo</option>
+          <option>Itaim Bibi/São Paulo</option>
+          <option>Tatuapé/São Paulo</option>
+          <option>Santana/São Paulo</option>
+          <option>Vila Mariana/São Paulo</option>
+          <option>Perdizes/São Paulo</option>
+          <option>Lapa/São Paulo</option>
+          <option>Santo André/São Paulo</option>
+          <option>Osasco/São Paulo</option>
+          <option>Artur Alvim/São Paulo</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Latitude</label>
+        <input type="number" id="lat" value="-23.55" step="0.001">
+      </div>
+      <div class="field full">
+        <label>Longitude</label>
+        <input type="number" id="lon" value="-46.63" step="0.001">
+      </div>
+      <div class="field full">
+        <label>Comodidades</label>
+        <div class="toggles">
+          <div class="toggle-btn" id="toggle-elevator" onclick="toggle(this)">Elevador</div>
+          <div class="toggle-btn" id="toggle-furnished" onclick="toggle(this)">Mobiliado</div>
+          <div class="toggle-btn" id="toggle-pool" onclick="toggle(this)">Piscina</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <button class="btn-predict" id="btn" onclick="predict()">Prever preço</button>
+      <p class="hint">Estimativa baseada em dados de abril/2019. Valores podem variar com o mercado atual.</p>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-label">Preço estimado de aluguel</div>
+    <div class="result-price" id="price-display">—</div>
+    <div class="result-sub">por mês · São Paulo, SP</div>
+    <div class="result-divider"></div>
+    <div class="result-meta">
+      <div class="meta-item">
+        <span class="meta-label">Modelo</span>
+        <span class="meta-value">RandomForestRegressor</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">R² do modelo</span>
+        <span class="meta-value">0.797</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">MAE médio</span>
+        <span class="meta-value">R$ 577</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Distrito</span>
+        <span class="meta-value" id="district-display">—</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="error-msg" id="error-msg"></div>
+</main>
+
+<footer>
+  <span>Desenvolvido por <a href="https://github.com/Anderson1999DC" target="_blank">Anderson Coelho</a> · Cientista de Dados</span>
+  <a href="/docs" target="_blank">Documentação da API →</a>
+</footer>
+
+<script>
+  function toggle(el) {
+    el.classList.toggle('active');
+  }
+
+  function isActive(id) {
+    return document.getElementById(id).classList.contains('active') ? 1 : 0;
+  }
+
+  async function predict() {
+    const btn = document.getElementById('btn');
+    const result = document.getElementById('result');
+    const errorMsg = document.getElementById('error-msg');
+
+    btn.disabled = true;
+    btn.textContent = 'Calculando...';
+    result.classList.remove('visible');
+    errorMsg.classList.remove('visible');
+
+    const payload = {
+      Condo: parseFloat(document.getElementById('condo').value) || 0,
+      Size: parseFloat(document.getElementById('size').value) || 50,
+      Rooms: parseInt(document.getElementById('rooms').value) || 1,
+      Toilets: parseInt(document.getElementById('toilets').value) || 1,
+      Suites: parseInt(document.getElementById('suites').value) || 0,
+      Parking: parseInt(document.getElementById('parking').value) || 0,
+      Elevator: isActive('toggle-elevator'),
+      Furnished: isActive('toggle-furnished'),
+      Swimming_Pool: isActive('toggle-pool'),
+      Latitude: parseFloat(document.getElementById('lat').value) || -23.55,
+      Longitude: parseFloat(document.getElementById('lon').value) || -46.63,
+      District: document.getElementById('district').value
+    };
+
+    try {
+      const res = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Erro na API');
+
+      const data = await res.json();
+      const preco = data.preco_previsto;
+
+      document.getElementById('price-display').textContent =
+        'R$ ' + preco.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+
+      document.getElementById('district-display').textContent = payload.District;
+      result.classList.add('visible');
+
+    } catch (err) {
+      errorMsg.textContent = 'Erro ao conectar com a API. Tente novamente em alguns segundos.';
+      errorMsg.classList.add('visible');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Prever preço';
+    }
+  }
+</script>
+</body>
+</html>
